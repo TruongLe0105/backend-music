@@ -15,10 +15,10 @@ productController.getListProductRender = catchAsync(async (req, res, next) => {
 
 //Post product by addmin
 productController.addProductsByAdmin = catchAsync(async (req, res, next) => {
-    const { id, singer, song, categories, time, image, audio } = req.body;
+    const { singer, song, categories, time, image, audio } = req.body;
 
     const product = await Product.create({
-        id, singer, song, categories, time, image, audio
+        singer, song, categories, time, image, audio
     })
     return sendResponse(res, 200, true, { product }, null, "Add product successful!")
 })
