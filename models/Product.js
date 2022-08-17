@@ -8,7 +8,7 @@ const productSchema = Schema({
     categories: { type: String, require: true, default: '' },
     time: { type: String, require: true, default: '' },
     image: { type: String, require: true, default: '' },
-    audio: { type: String, require: true, default: '' },
+    audio: { type: String, require: false, default: '' },
 },
     { timestamps: true }
 );

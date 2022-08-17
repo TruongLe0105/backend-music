@@ -7,6 +7,9 @@ router.get('/', function (req, res, next) {
 });
 
 const producRouter = require("./product.api");
+const categoriesRouter = require("./categories.api");
 router.use("/products", producRouter);
+
+router.use("/categories", categoriesRouter)
 
 module.exports = router;
