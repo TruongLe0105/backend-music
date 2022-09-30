@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getListProductRender, addProductsByAdmin, updateAudio } = require("../controllers/product.controller")
+const { getListProductRender, addProductsByAdmin, updateAudio, updateProduct, deleteProduct } = require("../controllers/product.controller")
 
 //User
 router.get("/", getListProductRender);
@@ -10,6 +10,10 @@ router.get("/", getListProductRender);
 router.post("/add", addProductsByAdmin);
 
 router.put("/update-audio", updateAudio);
+
+router.put("/:id", updateProduct);
+
+router.delete("/:id", deleteProduct);
 
 module.exports = router;
 

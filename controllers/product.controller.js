@@ -33,15 +33,44 @@ productController.addProductsByAdmin = catchAsync(async (req, res, next) => {
 //Update audio by addmin
 productController.updateAudio = catchAsync(async (req, res, next) => {
     const { id, audio } = req.body;
-    console.log("body", req.body)
     const product = await Product.findById(id);
 
-    console.log("product", product);
     product.audio = audio;
-    console.log("newProduct:", product);
 
     await product.save();
     return sendResponse(res, 200, true, { product }, null, "Update audio successful!")
+})
+
+//Update Product
+productController.updateProduct = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const { body } = req;
+
+    const target = await Product.findById(id);
+
+    if (!target) {
+        throw new AppError(404, "Product not found!", "Updata product error")
+    };
+
+    const allowUpdate = ["category", "singer", "song", "categories", "time", "image", "audio"];
+
+    allowUpdate.forEach((field => {
+        if (body[field]) target[field] = body[field];
+    }))
+
+    await target.save();
+
+    return sendResponse(res, 200, true, { target }, null, "Update product success!")
+});
+
+productController.deleteProduct = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+
+    const target = await Product.findByIdAndDelete(id);
+    if (!target) {
+        throw new AppError(404, "Product not found", "Delete product error!")
+    };
+    return sendResponse(res, 200, true, {}, null, "Delete Product successful!")
 })
 
 module.exports = productController;

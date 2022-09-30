@@ -6,16 +6,10 @@ const categoriesController = {};
 //Get list
 categoriesController.getCategory = catchAsync(async (req, res, next) => {
     const { category } = req.params;
-    // const key_work = category.toLowerCase();
-
-    // console.log("key_work", key_work);
-
     const count = await Categories.countDocuments();
 
     const categories = await Categories.find({ category })
         .sort()
-
-    console.log("categories", categories);
 
     return sendResponse(res, 200, true, { categories }, null, "Get categories successful");
 })
@@ -24,8 +18,6 @@ categoriesController.getCategory = catchAsync(async (req, res, next) => {
 categoriesController.addCategory = catchAsync(async (req, res, next) => {
     let { category, title, singer, image, banner_first, banner_second, banner_third } = req.body;
     category = category.toLowerCase();
-    // title = title.toLowerCase();
-    // console.log("here", category);
 
     const existed = await Categories.findOne({ title });
 
@@ -36,8 +28,6 @@ categoriesController.addCategory = catchAsync(async (req, res, next) => {
     const newCategory = await Categories.create({
         category, title, singer, image, banner_first, banner_second, banner_third
     });
-
-    // console.log("newCategory", newCategory);
 
     return sendResponse(res, 200, true, {}, null, "Add category successful!");
 });
@@ -65,8 +55,6 @@ categoriesController.updateCategory = catchAsync(async (req, res, next) => {
     };
 
     const allowUpdate = ["category", "title", "singer", "image", "banner_first", "banner_second", "banner_third"];
-
-    console.log("target", target);
 
     allowUpdate.forEach(field => {
         if (body[field]) {
