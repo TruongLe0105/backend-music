@@ -8,8 +8,14 @@ router.get('/', function (req, res, next) {
 
 const producRouter = require("./product.api");
 const categoriesRouter = require("./categories.api");
+const hundredTopRouter = require("./hundredTop.api");
+const newMusicRouter = require("./newMusic.api");
 router.use("/products", producRouter);
 
-router.use("/categories", categoriesRouter)
+router.use("/categories", categoriesRouter);
+
+router.use("/hundred-top", hundredTopRouter);
+
+router.use("/new-music", newMusicRouter);
 
 module.exports = router;
