@@ -4,7 +4,7 @@ const router = express.Router();
 const { } = require("../controllers/hundredTop.controller")
 
 //User
-// router.get("/:category", getCategory);
+router.get("/");
 
 //Admin
 // router.post("/add", addCategory);

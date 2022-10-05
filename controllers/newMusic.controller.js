@@ -6,67 +6,63 @@ const newMusicController = {};
 
 //Get list
 newMusicController.getRecentlyMusicUpdated = catchAsync(async (req, res, next) => {
-    const { genres } = req.params;
     const count = await NewMusic.countDocuments();
-
-    const list = await Product.find();
-
-    const newList = list.filter(e => e.orther.includes(genres));
+    const newList = await NewMusic.find().sort()
 
     return sendResponse(res, 200, true, { newList }, null, "Get NewMusic successful");
 })
 
 //Post NewMusic by addmin
-// newMusicController.addCategory = catchAsync(async (req, res, next) => {
-//     let { category, title, singer, image, banner_first, banner_second, banner_third } = req.body;
-//     category = category.toLowerCase();
+newMusicController.addNewMusic = catchAsync(async (req, res, next) => {
+    let { genres, image, singer } = req.body;
 
-//     const existed = await NewMusic.findOne({ title });
+    console.log({ genres })
 
-//     if (existed) {
-//         throw new AppError(500, "Existed", "Item existed!")
-//     };
+    const existed = await NewMusic.findOne({ genres });
 
-//     const newCategory = await NewMusic.create({
-//         category, title, singer, image, banner_first, banner_second, banner_third
-//     });
+    if (existed) {
+        throw new AppError(500, "Existed", "Item existed!")
+    };
 
-//     return sendResponse(res, 200, true, {}, null, "Add category successful!");
-// });
+    const newMusic = await NewMusic.create({
+        genres, singer, image,
+    });
 
-// newMusicController.deleteCategory = catchAsync(async (req, res, next) => {
-//     const { id } = req.params;
+    return sendResponse(res, 200, true, {}, null, "Add category successful!");
+});
 
-//     const target = await NewMusic.findOneAndDelete({ _id: id });
-//     const NewMusic = await NewMusic.find();
+newMusicController.deleteNewMusic = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
 
-//     if (!target) {
-//         throw new AppError(404, "Category not found!", "Delete Error")
-//     };
+    const target = await NewMusic.findOneAndDelete({ _id: id });
 
-//     return sendResponse(res, 200, true, { NewMusic }, null, "Delete category successful");
-// });
+    if (!target) {
+        throw new AppError(404, "Type of music not found!", "Delete Error")
+    };
 
-// newMusicController.updateCategory = catchAsync(async (req, res, next) => {
-//     const { id } = req.params;
-//     const body = req.body;
+    return sendResponse(res, 200, true, {}, null, "Delete item successful");
+});
 
-//     const target = await NewMusic.findOne({ _id: id });
-//     if (!target) {
-//         throw new AppError(404, "Category not found", "Update error");
-//     };
+newMusicController.updateNewMusic = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+    const body = req.body;
 
-//     const allowUpdate = ["category", "title", "singer", "image", "banner_first", "banner_second", "banner_third"];
+    const target = await NewMusic.findOne({ _id: id });
+    if (!target) {
+        throw new AppError(404, "Category not found", "Update error");
+    };
 
-//     allowUpdate.forEach(field => {
-//         if (body[field]) {
-//             target[field] = body[field];
-//         }
-//     });
+    const allowUpdate = ["genres", "singer", "image"];
 
-//     await target.save();
+    allowUpdate.forEach(field => {
+        if (body[field]) {
+            target[field] = body[field];
+        }
+    });
 
-//     return sendResponse(res, 200, true, { target }, null, "Update category successful!");
-// })
+    await target.save();
+
+    return sendResponse(res, 200, true, { target }, null, "Update category successful!");
+})
 
 module.exports = newMusicController;

@@ -15,7 +15,7 @@ productController.getListProductRender = catchAsync(async (req, res, next) => {
 
 //Post product by addmin
 productController.addProductsByAdmin = catchAsync(async (req, res, next) => {
-    const { singer, song, category, time, image, audio } = req.body;
+    const { singer, song, category, orther, time, image, audio } = req.body;
     const products = await Product.find();
     const inValidProduct = products?.find(product =>
         product.singer.toString().toLowerCase() === singer.toString().toLowerCase() &&
@@ -25,7 +25,7 @@ productController.addProductsByAdmin = catchAsync(async (req, res, next) => {
     };
 
     const product = await Product.create({
-        singer, song, category, time, image, audio
+        singer, song, category, orther, time, image, audio
     })
     return sendResponse(res, 200, true, { product }, null, "Add product successful!")
 });
@@ -52,11 +52,11 @@ productController.updateProduct = catchAsync(async (req, res, next) => {
         throw new AppError(404, "Product not found!", "Updata product error")
     };
 
-    const allowUpdate = ["category", "singer", "song", "time", "image", "audio"];
+    const allowUpdate = ["category", "orther", "singer", "song", "time", "image", "audio"];
 
     allowUpdate.forEach((field => {
         if (body[field]) target[field] = body[field];
-    }))
+    }));
 
     await target.save();
 

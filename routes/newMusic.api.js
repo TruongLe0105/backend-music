@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const { getRecentlyMusicUpdated } = require("../controllers/newMusic.controller")
+const { getRecentlyMusicUpdated, deleteNewMusic, addNewMusic, updateNewMusic } = require("../controllers/newMusic.controller")
 
 //User
-router.get("/:genres", getRecentlyMusicUpdated);
+router.get("/", getRecentlyMusicUpdated);
 
 //Admin
-// router.post("/add", addCategory);
+router.post("/add", addNewMusic);
 
-// router.put("/:id", updateCategory);
+router.put("/:id", updateNewMusic);
 
-// router.delete("/:id", deleteCategory);
+router.delete("/:id", deleteNewMusic);
 
 module.exports = router;
 
